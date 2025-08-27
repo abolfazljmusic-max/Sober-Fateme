@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My life — Surprise Book (fixed)</title>
+  <meta name="description" content="کتاب عاشقانه با افکت هک، جلد My life، ۶ صفحه با عکس‌ها و متن‌ها، موسیقی بی‌کلام و پایان قلب‌های بنفش. (Fixed)" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg-dark:#05070b; --green:#00ff9c; --pink:#ff78c8; --pink2:#ff9bd4; --paper:#fff; --ink:#6d0c59; --ink2:#9a2e72; --ring:#e9b5dc; --purple:#8b5cf6; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:"Vazirmatn",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.9;background:var(--bg-dark);color:#fff;overflow-x:hidden}
+
+    /* ========== HACK STAGE ========== */
+    #stage-hack{position:fixed;inset:0;background:radial-gradient(900px 700px at 80% -120px,#0e1323 5%,#090d18 40%,#05070b 80%), #000;color:#a3ffd8;font-family:ui-monospace,Consolas,Menlo,monospace;display:flex;flex-direction:column}
+    .hack-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid #0b1328;background:#050a14}
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--green);box-shadow:0 0 8px var(--green)}
+    .hack-body{flex:1;padding:10px 12px;font-size:12px;overflow:auto}
+    .line{opacity:.92;white-space:pre;}
+    .hide{opacity:0;pointer-events:none}
+    .fade{transition:opacity .9s ease}
+
+    /* ========== BOOK STAGE (pink theme) ========== */
+    #stage-love{position:relative;min-height:100dvh;padding:48px 16px;background:
+      radial-gradient(1200px 800px at 20% -200px, #ffe2f2 0, #ffd1ea 25%, transparent 55%),
+      radial-gradient(1200px 800px at 120% -200px, #ffe2f7 0, #ffd6ff 25%, transparent 55%),
+      linear-gradient(180deg,#fff5fb, #ffe8f4 40%, #ffe1ff);color:var(--ink)}
+    .container{width:min(980px,92%);margin-inline:auto}
+
+    header.love{position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(255,245,251,.6);border-bottom:1px solid rgba(138,43,226,.15);z-index:5}
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:10px 6px}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:800;color:var(--ink)}
+    .logo{width:36px;height:36px;border-radius:12px;background:conic-gradient(from 0deg, #ff67bc, #ffb8e6, #c084fc, #ff67bc);display:grid;place-items:center;color:white;font-weight:900;box-shadow:0 10px 30px rgba(255,105,180,.35)}
+    .cta{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid rgba(138,43,226,.2);color:var(--ink);font-weight:800}
+
+    .hero{text-align:center;margin:14px 0 10px}
+    .hero h1{margin:0;font-size:clamp(26px,5.5vw,44px)}
+    .hero p.sub{margin:6px 0 0;color:var(--ink2)}
+
+    /* Cover book */
+    .cover-wrap{display:grid;place-items:center;margin-top:18px}
+    .cover{width:min(680px,95vw);height:400px;border-radius:18px;position:relative;cursor:pointer;transform-style:preserve-3d;perspective:2000px}
+    .cover .board{position:absolute;inset:0;border-radius:18px;background:linear-gradient(135deg,#ffe5f4,#ffd3f1 40%,#f5ddff);border:2px solid var(--ring);box-shadow:0 20px 60px rgba(240,120,200,.35)}
+    .cover .decor{position:absolute;inset:10px;border-radius:14px;border:1px dashed rgba(139,92,246,.45)}
+    .cover h2{position:absolute;inset:auto 0 0 0;margin:0 auto 26px;text-align:center;width:100%;font-size:42px;letter-spacing:1px;color:var(--ink)}
+    .ribbon{position:absolute;top:-10px;right:18px;background:#8b5cf6;color:#fff;padding:8px 12px;border-radius:10px;box-shadow:0 10px 30px rgba(139,92,246,.45)}
+    .sparkles{position:absolute;left:18px;bottom:18px;font-size:24px;filter:drop-shadow(0 6px 12px rgba(255,105,180,.35))}
+
+    /* Book pages (viewer) */
+    .book{width:min(900px,96vw);height:500px;margin:22px auto 0;position:relative}
+    .spread{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .page{background:var(--paper);border:1px solid rgba(139,92,246,.25);border-radius:14px;box-shadow:0 14px 36px rgba(240,120,200,.25);padding:14px;overflow:hidden;position:relative}
+    .page h3{margin:0 0 6px;color:var(--ink)}
+    .txt{color:var(--ink);white-space:pre-line}
+    .img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+
+    /* Flip effect between spreads */
+    .flip-anim{position:absolute;inset:0;pointer-events:none}
+    .sheet{position:absolute;top:0;bottom:0;right:0;width:50%;transform-origin:right center;background:var(--paper);border-left:1px solid rgba(139,92,246,.25);box-shadow:0 8px 26px rgba(0,0,0,.15);pointer-events:none}
+    .sheet.turn{animation:turn 0.9s ease forwards}
+    @keyframes turn{0%{transform:rotateY(0)}100%{transform:rotateY(-180deg)}}
+
+    .tip{margin:10px auto 0;display:flex;gap:10px;justify-content:center;color:var(--ink2);font-size:14px}
+    .actions{margin-top:16px;display:flex;gap:12px;justify-content:center}
+    .btn{padding:9px 14px;border-radius:12px;border:1px solid rgba(139,92,246,.25);background:#fff;color:var(--ink);font-weight:800}
+
+    /* Finale */
+    .finale{position:fixed;inset:0;display:none;place-items:center;background:linear-gradient(180deg,#fff5fb,#ffe8f4 40%,#ffe1ff)}
+    .finale.show{display:grid;animation:fadein .6s ease}
+    @keyframes fadein{from{opacity:0}to{opacity:1}}
+    .finale h1{color:var(--ink);font-size:clamp(28px,7vw,60px);margin:0;text-align:center}
+
+    /* Floating hearts */
+    .heart{position:fixed;font-size:20px;pointer-events:none;animation:float 1.6s ease-out forwards;filter:drop-shadow(0 6px 12px rgba(139,92,246,.45))}
+    @keyframes float{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}12%{opacity:1}100%{opacity:0;transform:translate(-50%,-140px) scale(1.9)}}
+  </style>
+</head>
+<body>
+  <!-- ===== Stage 1: Fake "Hack" Screen ===== -->
+  <section id="stage-hack" class="fade">
+    <div class="hack-header">
+      <div style="display:flex;align-items:center;gap:8px"><span class="dot"></span><strong>secure-shell@morena-device</strong></div>
+      <small>STATUS: LINKED • QR</small>
+    </div>
+    <div class="hack-body" id="hackBody"></div>
+  </section>
+
+  <!-- ===== Stage 2: Love / Book ===== -->
+  <header class="love fade hide" id="loveHeader">
+    <div class="container nav">
+      <div class="brand"><span class="logo">💖</span> My life</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <a class="cta" id="shareBtn">نمایش QR لینک</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="stage-love" class="fade hide">
+    <div class="container">
+      <section class="hero">
+        <h1>Love you for ever my morena ✨</h1>
+        <p class="sub">برای ورق زدن: فقط روی کتاب بزن 💗</p>
+      </section>
+
+      <!-- Closed cover -->
+      <div class="cover-wrap" id="coverWrap">
+        <div class="cover" id="cover">
+          <div class="board"></div>
+          <div class="decor"></div>
+          <span class="ribbon">My life</span>
+          <h2>My life</h2>
+          <div class="sparkles">✨ 💜 ✨</div>
+        </div>
+        <div class="tip">بار اول کلیک → کتاب باز می‌شود</div>
+      </div>
+
+      <!-- Book viewer -->
+      <div class="book hide" id="book">
+        <div class="spread">
+          <article class="page left" id="leftPage"></article>
+          <article class="page right" id="rightPage"></article>
+          <div class="flip-anim"><div class="sheet" id="sheet"></div></div>
+        </div>
+        <div class="tip">با هر کلیک، کتاب ورق می‌خورد (۳ بار). دفعهٔ چهارم: بسته می‌شود.</div>
+        <div class="actions"><button class="btn" id="restart">شروع دوباره</button></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Finale overlay -->
+  <div class="finale" id="finale"><h1>Forever Love 💜</h1></div>
+
+  <!-- Minimal QR dialog -->
+  <dialog id="qrDialog" style="border:none;border-radius:16px;padding:0;box-shadow:0 20px 80px rgba(0,0,0,.35)">
+    <div style="padding:16px 16px 6px;background:#fff;border-top-left-radius:16px;border-top-right-radius:16px;color:var(--ink);font-weight:800">لینک این صفحه (QR)</div>
+    <div id="qrBox" style="background:#fff;display:grid;place-items:center;padding:14px"></div>
+    <form method="dialog" style="display:flex;gap:10px;justify-content:flex-end;background:#fff;border-bottom-left-radius:16px;border-bottom-right-radius:16px;padding:8px 12px">
+      <button class="btn" style="margin:6px 0">بستن</button>
+    </form>
+  </dialog>
+
+  <script>
+    /* ===== Hack stage logic + Book logic + QR ===== */
+    // (کل کد جاوااسکریپت از نسخه‌ی اصلاح‌شده canvas همین‌جا قرار می‌گیرد)
+  </script>
+</body>
+</html>
